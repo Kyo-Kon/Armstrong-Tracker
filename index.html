@@ -3,7 +3,7 @@
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
-  <title>Armstrong Pull-up Program Tracker</title>
+  <title>Armstrong Pull-up Tracker</title>
 
   <!-- PWA -->
   <link rel="manifest" href="manifest.json">
@@ -25,240 +25,350 @@
       --total:#fefcbf;
     }
 
-    body {
+    *{ box-sizing:border-box; }
+    body{
+      margin:0;
       font-family: Arial, Helvetica, sans-serif;
-      margin: 0;
-      padding: 18px 12px 28px;
       background: var(--bg);
-      color: #111;
+      color:#111;
+      padding: 14px 12px 78px; /* bottom padding for nav */
     }
 
-    .container{
-      max-width: 1100px;
-      margin: 0 auto;
+    .container{ max-width: 720px; margin: 0 auto; }
+
+    header{
+      text-align:center;
+      padding: 10px 8px 6px;
+    }
+    h1{ margin: 6px 0 4px; color: var(--blue); font-size: 1.35rem; }
+    .sub{ margin:0 0 10px; color:#444; font-size:0.95rem; }
+
+    .card{
+      background: var(--card);
+      border: 1px solid #e6e6e6;
+      border-radius: 16px;
+      box-shadow: 0 2px 10px rgba(0,0,0,0.07);
+      padding: 14px 12px;
+      margin: 12px 0;
     }
 
-    h1 { text-align: center; color: var(--blue); margin: 10px 0 6px; }
-    .sub { text-align:center; color:#444; font-size: 0.95rem; margin: 0 0 12px; }
-
-    .instructions {
+    .instructions{
       background: var(--note);
-      padding: 14px 14px;
       border-left: 5px solid var(--noteBorder);
-      border-radius: 10px;
-      margin: 14px 0 14px;
-      box-shadow: 0 1px 6px rgba(0,0,0,0.06);
+      border-radius: 12px;
+      padding: 12px 12px;
       line-height: 1.35;
+      font-size: 0.95rem;
     }
+
+    .row{ display:flex; gap:10px; flex-wrap:wrap; align-items:center; }
+    .row > *{ flex: 1 1 140px; }
+
+    label{
+      display:block;
+      font-weight: 800;
+      color:#223;
+      margin: 10px 0 6px;
+      text-align:left;
+    }
+
+    .hint{ font-size:0.85rem; color:#555; margin-top:6px; }
+
+    input[type="number"], select{
+      width: 100%;
+      padding: 12px 10px;
+      border: 1px solid #b6b6b6;
+      border-radius: 12px;
+      font-size: 1.05rem;
+      background:#fff;
+      text-align:center;
+    }
+
+    textarea{
+      width:100%;
+      min-height: 170px;
+      resize: vertical;
+      padding: 12px 10px;
+      border: 1px solid #b6b6b6;
+      border-radius: 12px;
+      font-size: 1.05rem;
+      font-family: ui-monospace, SFMono-Regular, Menlo, Monaco, Consolas, "Liberation Mono", "Courier New", monospace;
+      line-height:1.35;
+      background:#fff;
+    }
+
+    .pill{
+      display:inline-block;
+      padding: 6px 10px;
+      border-radius: 999px;
+      border: 1px solid #e1e1e1;
+      background: #fff;
+      font-weight: 900;
+    }
+
+    .total{
+      display:flex;
+      align-items:center;
+      justify-content: space-between;
+      gap:10px;
+      background: var(--total);
+      border-radius: 14px;
+      padding: 12px 12px;
+      font-weight: 900;
+      margin-top: 12px;
+    }
+    .total span{ font-size: 1.1rem; }
 
     .toolbar{
       display:flex;
       gap:10px;
-      flex-wrap: wrap;
-      align-items:center;
+      flex-wrap:wrap;
       justify-content:center;
-      margin: 10px 0 14px;
+      margin: 12px 0 0;
     }
-
     button{
       border: 1px solid #bdbdbd;
       background: #fff;
       padding: 10px 12px;
-      border-radius: 10px;
-      font-weight: 700;
-      cursor: pointer;
+      border-radius: 12px;
+      font-weight: 800;
+      cursor:pointer;
       box-shadow: 0 1px 4px rgba(0,0,0,0.06);
+      flex: 1 1 140px;
     }
     button:active{ transform: translateY(1px); }
 
     .status{
-      font-size: 0.9rem;
+      text-align:center;
       color:#444;
-      background:#fff;
-      border:1px solid #e4e4e4;
-      border-radius:10px;
-      padding: 10px 12px;
-      box-shadow: 0 1px 4px rgba(0,0,0,0.06);
-    }
-
-    .scroll-wrap{
-      overflow-x: auto;
-      -webkit-overflow-scrolling: touch;
-      border-radius: 14px;
-      box-shadow: 0 2px 10px rgba(0,0,0,0.08);
-      background: var(--card);
-    }
-
-    table {
-      width: 100%;
-      border-collapse: collapse;
-      min-width: 980px; /* enables horizontal swipe on phones */
-      background: var(--card);
-    }
-
-    th, td {
-      border: 1px solid var(--border);
-      padding: 10px;
-      text-align: center;
-      vertical-align: middle;
-    }
-
-    th {
-      background: var(--blue);
-      color: white;
-      font-weight: 800;
-      position: sticky;
-      top: 0;
-      z-index: 2;
-    }
-
-    .section-title {
-      background: var(--blue3);
-      color: white;
-      font-weight: 800;
-    }
-
-    .rest { background: #edf2f7; font-style: italic; }
-
-    /* Inputs: bigger + mobile friendly */
-    input[type="number"]{
-      width: 84px;
-      max-width: 100%;
-      text-align: center;
-      padding: 10px 8px;
-      border: 1px solid #b6b6b6;
-      border-radius: 10px;
-      font-size: 1.05rem;
-      background: #fff;
-    }
-
-    .total-cell {
-      font-weight: 900;
-      background: var(--total);
-      border-radius: 10px;
+      font-size: 0.9rem;
       margin-top: 10px;
-      padding: 10px 8px;
-      display: inline-block;
-      min-width: 160px;
     }
 
-    .wide { min-width: 160px; }
-    .tick-boxes { font-size: 0.95em; line-height: 1.4; }
+    /* "One page per day" sections */
+    .page{ display:none; }
+    .page.active{ display:block; }
 
-    .note { font-size: 0.9em; color: #555; text-align: center; margin-top: 14px; }
+    /* Bottom nav */
+    .bottom-nav{
+      position: fixed;
+      left: 0;
+      right: 0;
+      bottom: 0;
+      background: rgba(249,249,249,0.92);
+      backdrop-filter: blur(8px);
+      border-top: 1px solid #e4e4e4;
+      padding: 8px 10px 10px;
+    }
+    .tabs{
+      display:flex;
+      gap:6px;
+      max-width: 760px;
+      margin: 0 auto;
+    }
+    .tab{
+      flex:1 1 0;
+      border: 1px solid #d7d7d7;
+      background: #fff;
+      border-radius: 12px;
+      padding: 10px 6px;
+      font-weight: 900;
+      cursor:pointer;
+      font-size: 0.92rem;
+    }
+    .tab.active{
+      border-color: var(--blue);
+      box-shadow: 0 1px 6px rgba(0,0,0,0.08);
+    }
 
-    /* Small-screen polish */
-    @media (max-width: 480px){
-      body{ padding: 14px 10px 22px; }
-      h1{ font-size: 1.35rem; }
-      .instructions{ font-size: 0.95rem; }
-      button{ width: 100%; }
-      .status{ width: 100%; text-align:center; }
-      input[type="number"]{ width: 92px; font-size: 1.1rem; }
+    @media (max-width: 420px){
+      h1{ font-size: 1.22rem; }
+      .tab{ font-size: 0.86rem; padding: 10px 4px; }
     }
   </style>
 </head>
 <body>
   <div class="container">
-    <h1>Armstrong Pull-up Program Tracker</h1>
-    <p class="sub">Autosaves on every entry • Works offline after first load</p>
+    <header>
+      <h1>Armstrong Pull-up Tracker</h1>
+      <p class="sub">One page per day • Autosave • Offline</p>
+    </header>
 
-    <div class="instructions">
-      <strong>How to use:</strong> Enter your reps in the boxes.<br>
-      Totals update automatically for Days 1, 3, and 4. Day 2 and Day 5 totals are manual.
+    <div class="card instructions">
+      <strong>Notes:</strong> Day 1/3/4 totals are auto-calculated. Day 2 counts tally marks in the box. Day 5 lets you pick which day (1–4) you’re repeating and tracks it separately.
     </div>
 
-    <div class="toolbar">
+    <div class="card toolbar">
       <button id="btnReset" type="button">Reset All</button>
-      <button id="btnExport" type="button">Export Data</button>
-      <button id="btnImport" type="button">Import Data</button>
-      <span class="status" id="saveStatus">Saved ✓</span>
+      <button id="btnExport" type="button">Export</button>
+      <button id="btnImport" type="button">Import</button>
     </div>
+    <div class="status" id="saveStatus">Saved ✓</div>
 
-    <div class="scroll-wrap" aria-label="Swipe horizontally on mobile to see all days">
-      <table>
-        <thead>
-          <tr>
-            <th>Day 1<br>MAX EFFORT</th>
-            <th>Day 2<br>PYRAMID</th>
-            <th>Day 3<br>GRIP SWITCH</th>
-            <th>Day 4<br>MAX DAY</th>
-            <th>Day 5<br>HARDEST</th>
-            <th>Rest</th>
-          </tr>
-        </thead>
-        <tbody>
-          <tr>
-            <td class="section-title">3 Max Pushup Sets<br>then 5 Max Effort Sets</td>
-            <td class="section-title">Pyramid of 1,2,3,4,… until missed set<br>Then one max set</td>
-            <td class="section-title">3 sets overhand<br>3 sets palms inward / hands together<br>3 sets wide grip</td>
-            <td class="section-title">Max number of<br>Training Sets</td>
-            <td class="section-title">Repeat the hardest<br>workout from Days 1–4</td>
-            <td class="rest">REST DAYS</td>
-          </tr>
+    <!-- PAGE: Day 1 -->
+    <section class="page active" id="page-day1" aria-label="Day 1">
+      <div class="card">
+        <h2 style="margin:4px 0 6px; color:var(--blue);">Day 1 — Max Effort</h2>
+        <div class="hint">3 max pushup sets, then 5 max effort pull-up sets. Rest 90 seconds.</div>
 
-          <tr>
-            <td>Rest 90 seconds</td>
-            <td>Rest 10 seconds<br>between each pull-up<br>in last set</td>
-            <td>Rest 60 seconds</td>
-            <td>Rest 60 seconds</td>
-            <td>—</td>
-            <td class="rest">—</td>
-          </tr>
+        <label>Set 1</label><input type="number" min="0" id="d1s1">
+        <label>Set 2</label><input type="number" min="0" id="d1s2">
+        <label>Set 3</label><input type="number" min="0" id="d1s3">
+        <label>Set 4</label><input type="number" min="0" id="d1s4">
+        <label>Set 5</label><input type="number" min="0" id="d1s5">
 
-          <tr>
-            <td>
-              <div>Set 1 <input type="number" min="0" id="d1s1"></div>
-              <div>Set 2 <input type="number" min="0" id="d1s2"></div>
-              <div>Set 3 <input type="number" min="0" id="d1s3"></div>
-              <div>Set 4 <input type="number" min="0" id="d1s4"></div>
-              <div>Set 5 <input type="number" min="0" id="d1s5"></div>
-              <div class="total-cell">Total: <span id="totalD1">0</span></div>
-            </td>
+        <div class="total"><div>Total</div><span id="totalD1">0</span></div>
+      </div>
+    </section>
 
-            <td class="wide">
-              <div class="tick-boxes">
-                Make tick marks for each pull-up<br>
-                (total after final max effort set)
-              </div>
-              <div style="margin-top:10px;"><strong>Total:</strong> <input type="number" min="0" id="totalD2" placeholder="manual"></div>
-            </td>
+    <!-- PAGE: Day 2 -->
+    <section class="page" id="page-day2" aria-label="Day 2">
+      <div class="card">
+        <h2 style="margin:4px 0 6px; color:var(--blue);">Day 2 — Pyramid</h2>
+        <div class="hint">Pyramid 1,2,3… until missed set. Then one max set.</div>
 
-            <td>
-              <div>Set 1 <input type="number" min="0" id="d3s1"></div>
-              <div>Set 2 <input type="number" min="0" id="d3s2"></div>
-              <div>Set 3 <input type="number" min="0" id="d3s3"></div>
-              <div>Set 4 <input type="number" min="0" id="d3s4"></div>
-              <div>Set 5 <input type="number" min="0" id="d3s5"></div>
-              <div>Set 6 <input type="number" min="0" id="d3s6"></div>
-              <div>Set 7 <input type="number" min="0" id="d3s7"></div>
-              <div>Set 8 <input type="number" min="0" id="d3s8"></div>
-              <div>Set 9 <input type="number" min="0" id="d3s9"></div>
-              <div class="total-cell">Total: <span id="totalD3">0</span></div>
-            </td>
+        <label>Tally box (type <strong>|</strong> or <strong>I</strong>; new line = new set)</label>
+        <textarea id="d2tally" placeholder="Example:
+|||||
+||||
+|||"></textarea>
 
-            <td>
-              <div>Pull-ups per Training Set: <input type="number" min="0" id="d4train"></div>
-              <div style="margin-top:10px;">Training Sets Completed: <input type="number" min="0" id="d4sets"></div>
-              <div class="total-cell">Total: <span id="totalD4">0</span></div>
-            </td>
+        <div class="row" style="margin-top:10px;">
+          <div>
+            <label>Count</label>
+            <div class="pill"> <span id="tallyCount">0</span> </div>
+          </div>
+          <div>
+            <label>Total (auto, or override)</label>
+            <input type="number" min="0" id="totalD2" placeholder="auto (or override)">
+            <div class="hint">If you type in Total, it becomes manual until you edit the tally box again.</div>
+          </div>
+        </div>
+      </div>
+    </section>
 
-            <td>
-              <div><strong>Total pull-ups per workout:</strong></div>
-              <div style="margin-top:10px;"><input type="number" min="0" id="totalD5" placeholder="enter manually"></div>
-            </td>
+    <!-- PAGE: Day 3 -->
+    <section class="page" id="page-day3" aria-label="Day 3">
+      <div class="card">
+        <h2 style="margin:4px 0 6px; color:var(--blue);">Day 3 — Grip Switch</h2>
+        <div class="hint">3 sets overhand, 3 sets palms inward/hands together, 3 sets wide. Rest 60 seconds.</div>
 
-            <td class="rest">—</td>
-          </tr>
-        </tbody>
-      </table>
+        <label>Set 1</label><input type="number" min="0" id="d3s1">
+        <label>Set 2</label><input type="number" min="0" id="d3s2">
+        <label>Set 3</label><input type="number" min="0" id="d3s3">
+        <label>Set 4</label><input type="number" min="0" id="d3s4">
+        <label>Set 5</label><input type="number" min="0" id="d3s5">
+        <label>Set 6</label><input type="number" min="0" id="d3s6">
+        <label>Set 7</label><input type="number" min="0" id="d3s7">
+        <label>Set 8</label><input type="number" min="0" id="d3s8">
+        <label>Set 9</label><input type="number" min="0" id="d3s9">
+
+        <div class="total"><div>Total</div><span id="totalD3">0</span></div>
+      </div>
+    </section>
+
+    <!-- PAGE: Day 4 -->
+    <section class="page" id="page-day4" aria-label="Day 4">
+      <div class="card">
+        <h2 style="margin:4px 0 6px; color:var(--blue);">Day 4 — Max Day</h2>
+        <div class="hint">Max number of training sets. Rest 60 seconds.</div>
+
+        <label>Pull-ups per Training Set</label><input type="number" min="0" id="d4train">
+        <label>Training Sets Completed</label><input type="number" min="0" id="d4sets">
+
+        <div class="total"><div>Total</div><span id="totalD4">0</span></div>
+      </div>
+    </section>
+
+    <!-- PAGE: Day 5 -->
+    <section class="page" id="page-day5" aria-label="Day 5">
+      <div class="card">
+        <h2 style="margin:4px 0 6px; color:var(--blue);">Day 5 — Hardest Day</h2>
+        <div class="hint">Repeat the hardest workout from Days 1–4 (pick which one below). Tracked separately.</div>
+
+        <label>Which workout are you repeating?</label>
+        <select id="d5pick">
+          <option value="1">Repeat Day 1 (5 max effort sets)</option>
+          <option value="2">Repeat Day 2 (pyramid tally)</option>
+          <option value="3">Repeat Day 3 (9 grip-switch sets)</option>
+          <option value="4">Repeat Day 4 (training sets)</option>
+        </select>
+
+        <!-- Day 5 variants -->
+        <div id="d5variant-1" class="d5variant" style="margin-top:12px;">
+          <div class="hint"><strong>Day 1 style:</strong> enter 5 sets.</div>
+          <label>Set 1</label><input type="number" min="0" id="d5d1s1">
+          <label>Set 2</label><input type="number" min="0" id="d5d1s2">
+          <label>Set 3</label><input type="number" min="0" id="d5d1s3">
+          <label>Set 4</label><input type="number" min="0" id="d5d1s4">
+          <label>Set 5</label><input type="number" min="0" id="d5d1s5">
+          <div class="total"><div>Total</div><span id="totalD5">0</span></div>
+        </div>
+
+        <div id="d5variant-2" class="d5variant" style="margin-top:12px; display:none;">
+          <div class="hint"><strong>Day 2 style:</strong> tally box.</div>
+          <label>Tally box (type | or I)</label>
+          <textarea id="d5d2tally" placeholder="Example:
+|||||
+||||
+|||"></textarea>
+          <div class="row" style="margin-top:10px;">
+            <div>
+              <label>Count</label>
+              <div class="pill"><span id="tallyCountD5">0</span></div>
+            </div>
+            <div>
+              <label>Total (auto, or override)</label>
+              <input type="number" min="0" id="totalD5d2" placeholder="auto (or override)">
+            </div>
+          </div>
+          <div class="hint">Shown on top: total for Day 5 will use this value.</div>
+        </div>
+
+        <div id="d5variant-3" class="d5variant" style="margin-top:12px; display:none;">
+          <div class="hint"><strong>Day 3 style:</strong> 9 sets.</div>
+          <label>Set 1</label><input type="number" min="0" id="d5d3s1">
+<label>Set 2</label><input type="number" min="0" id="d5d3s2">
+<label>Set 3</label><input type="number" min="0" id="d5d3s3">
+<label>Set 4</label><input type="number" min="0" id="d5d3s4">
+<label>Set 5</label><input type="number" min="0" id="d5d3s5">
+<label>Set 6</label><input type="number" min="0" id="d5d3s6">
+<label>Set 7</label><input type="number" min="0" id="d5d3s7">
+<label>Set 8</label><input type="number" min="0" id="d5d3s8">
+<label>Set 9</label><input type="number" min="0" id="d5d3s9">
+          <div class="total"><div>Total</div><span id="totalD5d3">0</span></div>
+        </div>
+
+        <div id="d5variant-4" class="d5variant" style="margin-top:12px; display:none;">
+          <div class="hint"><strong>Day 4 style:</strong> training sets.</div>
+          <label>Pull-ups per Training Set</label><input type="number" min="0" id="d5d4train">
+          <label>Training Sets Completed</label><input type="number" min="0" id="d5d4sets">
+          <div class="total"><div>Total</div><span id="totalD5d4">0</span></div>
+        </div>
+
+        <div class="card" style="margin-top:14px;">
+          <div class="hint"><strong>Day 5 total shown depends on your selection.</strong></div>
+          <div class="total"><div>Day 5 Total</div><span id="totalD5Unified">0</span></div>
+        </div>
+
+      </div>
+    </section>
+
+  </div>
+
+  <!-- Bottom nav -->
+  <div class="bottom-nav" role="navigation" aria-label="Day navigation">
+    <div class="tabs">
+      <button class="tab active" data-target="day1" type="button">Day 1</button>
+      <button class="tab" data-target="day2" type="button">Day 2</button>
+      <button class="tab" data-target="day3" type="button">Day 3</button>
+      <button class="tab" data-target="day4" type="button">Day 4</button>
+      <button class="tab" data-target="day5" type="button">Day 5</button>
     </div>
-
-    <p class="note">Original concept: ArmstrongPullupProgram.com • Reproduction encouraged</p>
   </div>
 
 <script>
-  const STORAGE_KEY = "armstrong_tracker_v1";
+  const STORAGE_KEY = "armstrong_tracker_v3";
   const saveStatus = document.getElementById("saveStatus");
 
   function setStatus(msg){
@@ -267,45 +377,138 @@
     setStatus._t = setTimeout(() => saveStatus.textContent = "Saved ✓", 900);
   }
 
-  function calcDay1() {
-    let sum = 0;
-    for (let i = 1; i <= 5; i++) {
-      let val = parseInt(document.getElementById(`d1s${i}`).value) || 0;
-      sum += val;
-    }
-    document.getElementById('totalD1').textContent = sum;
+  // Navigation
+  function showPage(day){
+    document.querySelectorAll(".page").forEach(p => p.classList.remove("active"));
+    document.getElementById(`page-${day}`).classList.add("active");
+
+    document.querySelectorAll(".tab").forEach(t => t.classList.toggle("active", t.dataset.target === day));
+    // Save current page in URL hash (nice UX)
+    location.hash = day;
+    window.scrollTo({top:0, behavior:"instant"});
   }
 
-  function calcDay3() {
+  document.querySelectorAll(".tab").forEach(btn => {
+    btn.addEventListener("click", () => showPage(btn.dataset.target));
+  });
+
+  // Calculations
+  function sumIds(prefix, count){
     let sum = 0;
-    for (let i = 1; i <= 9; i++) {
-      let val = parseInt(document.getElementById(`d3s${i}`).value) || 0;
-      sum += val;
+    for(let i=1;i<=count;i++){
+      const v = parseInt(document.getElementById(`${prefix}${i}`).value) || 0;
+      sum += v;
     }
-    document.getElementById('totalD3').textContent = sum;
+    return sum;
   }
 
-  function calcDay4() {
-    let perSet = parseInt(document.getElementById('d4train').value) || 0;
-    let setsDone = parseInt(document.getElementById('d4sets').value) || 0;
-    document.getElementById('totalD4').textContent = perSet * setsDone;
+  function calcDay1(){
+    const sum = sumIds("d1s", 5);
+    document.getElementById("totalD1").textContent = sum;
   }
+
+  function tallyCountFromText(txt){
+    const matches = (txt || "").match(/[|I]/g);
+    return matches ? matches.length : 0;
+  }
+
+  function updateDay2(){
+    const count = tallyCountFromText(document.getElementById("d2tally").value);
+    document.getElementById("tallyCount").textContent = count;
+    const totalInput = document.getElementById("totalD2");
+    const source = totalInput.getAttribute("data-source") || "auto";
+    if(source === "auto"){
+      totalInput.value = count ? String(count) : "";
+    }
+  }
+
+  function calcDay3(){
+    const sum = sumIds("d3s", 9);
+    document.getElementById("totalD3").textContent = sum;
+  }
+
+  function calcDay4(){
+    const perSet = parseInt(document.getElementById("d4train").value) || 0;
+    const setsDone = parseInt(document.getElementById("d4sets").value) || 0;
+    document.getElementById("totalD4").textContent = perSet * setsDone;
+  }
+
+  // Day 5 calculations
+  function calcDay5Variant1(){
+    document.getElementById("totalD5").textContent = sumIds("d5d1s", 5);
+  }
+  function calcDay5Variant2(){
+    const count = tallyCountFromText(document.getElementById("d5d2tally").value);
+    document.getElementById("tallyCountD5").textContent = count;
+    const totalInput = document.getElementById("totalD5d2");
+    const source = totalInput.getAttribute("data-source") || "auto";
+    if(source === "auto"){
+      totalInput.value = count ? String(count) : "";
+    }
+  }
+  function calcDay5Variant3(){
+    document.getElementById("totalD5d3").textContent = sumIds("d5d3s", 9);
+  }
+  function calcDay5Variant4(){
+    const perSet = parseInt(document.getElementById("d5d4train").value) || 0;
+    const setsDone = parseInt(document.getElementById("d5d4sets").value) || 0;
+    document.getElementById("totalD5d4").textContent = perSet * setsDone;
+  }
+
+  function updateDay5Unified(){
+    const pick = document.getElementById("d5pick").value;
+    let total = 0;
+    if(pick === "1"){
+      total = parseInt(document.getElementById("totalD5").textContent) || 0;
+    }else if(pick === "2"){
+      total = parseInt(document.getElementById("totalD5d2").value) || 0;
+    }else if(pick === "3"){
+      total = parseInt(document.getElementById("totalD5d3").textContent) || 0;
+    }else{
+      total = parseInt(document.getElementById("totalD5d4").textContent) || 0;
+    }
+    document.getElementById("totalD5Unified").textContent = total;
+  }
+
+  function setDay5Variant(pick){
+    document.querySelectorAll(".d5variant").forEach(v => v.style.display = "none");
+    document.getElementById(`d5variant-${pick}`).style.display = "block";
+    recalcAll();
+  }
+
+  document.getElementById("d5pick").addEventListener("change", (e) => {
+    setDay5Variant(e.target.value);
+    saveAll();
+  });
 
   function recalcAll(){
-    calcDay1(); calcDay3(); calcDay4();
+    calcDay1();
+    updateDay2();
+    calcDay3();
+    calcDay4();
+
+    calcDay5Variant1();
+    calcDay5Variant2();
+    calcDay5Variant3();
+    calcDay5Variant4();
+    updateDay5Unified();
   }
 
-  function getAllInputs(){
-    return Array.from(document.querySelectorAll('input[type="number"]'));
+  // Save/Load
+  function getAllFields(){
+    const fields = Array.from(document.querySelectorAll('input[type="number"], textarea, select'));
+    return fields;
   }
 
   function saveAll(){
     const data = {};
-    getAllInputs().forEach(inp => data[inp.id] = inp.value ?? "");
-    localStorage.setItem(STORAGE_KEY, JSON.stringify({
-      savedAt: new Date().toISOString(),
-      data
-    }));
+    getAllFields().forEach(el => data[el.id] = el.value ?? "");
+    // track auto/manual sources for the two pyramid totals
+    const sources = {
+      totalD2: document.getElementById("totalD2").getAttribute("data-source") || "auto",
+      totalD5d2: document.getElementById("totalD5d2").getAttribute("data-source") || "auto"
+    };
+    localStorage.setItem(STORAGE_KEY, JSON.stringify({ savedAt: new Date().toISOString(), data, sources }));
     setStatus("Saved ✓");
   }
 
@@ -315,11 +518,18 @@
     try{
       const parsed = JSON.parse(raw);
       const data = parsed.data || {};
-      getAllInputs().forEach(inp => {
-        if(Object.prototype.hasOwnProperty.call(data, inp.id)){
-          inp.value = data[inp.id];
+      getAllFields().forEach(el => {
+        if(Object.prototype.hasOwnProperty.call(data, el.id)){
+          el.value = data[el.id];
         }
       });
+      const sources = parsed.sources || {};
+      document.getElementById("totalD2").setAttribute("data-source", sources.totalD2 || "auto");
+      document.getElementById("totalD5d2").setAttribute("data-source", sources.totalD5d2 || "auto");
+
+      // Ensure correct day5 variant visible
+      setDay5Variant(document.getElementById("d5pick").value || "1");
+
       recalcAll();
       setStatus("Loaded ✓");
     }catch(e){
@@ -329,14 +539,23 @@
 
   function resetAll(){
     if(!confirm("Reset all fields? This clears saved data too.")) return;
-    getAllInputs().forEach(inp => inp.value = "");
+    getAllFields().forEach(el => {
+      if(el.tagName.toLowerCase() === "select"){
+        el.value = "1";
+      }else{
+        el.value = "";
+      }
+    });
     localStorage.removeItem(STORAGE_KEY);
+    document.getElementById("totalD2").setAttribute("data-source","auto");
+    document.getElementById("totalD5d2").setAttribute("data-source","auto");
+    setDay5Variant("1");
     recalcAll();
     setStatus("Reset ✓");
   }
 
   function exportData(){
-    const raw = localStorage.getItem(STORAGE_KEY) || JSON.stringify({savedAt:null, data:{}});
+    const raw = localStorage.getItem(STORAGE_KEY) || JSON.stringify({savedAt:null, data:{}, sources:{}});
     const blob = new Blob([raw], {type:"application/json"});
     const url = URL.createObjectURL(blob);
     const a = document.createElement("a");
@@ -372,23 +591,44 @@
     input.click();
   }
 
-  // Autosave on any input change (with tiny debounce)
+  document.getElementById("btnReset").addEventListener("click", resetAll);
+  document.getElementById("btnExport").addEventListener("click", exportData);
+  document.getElementById("btnImport").addEventListener("click", importData);
+
+  // autosave debounce
   let t;
   document.addEventListener("input", (e) => {
-    if(e.target && e.target.matches('input[type="number"]')){
+    if(!e.target) return;
+
+    // Manual overrides for totals
+    if(e.target.id === "totalD2"){
+      e.target.setAttribute("data-source","manual");
+    }
+    if(e.target.id === "d2tally"){
+      document.getElementById("totalD2").setAttribute("data-source","auto");
+    }
+    if(e.target.id === "totalD5d2"){
+      e.target.setAttribute("data-source","manual");
+    }
+    if(e.target.id === "d5d2tally"){
+      document.getElementById("totalD5d2").setAttribute("data-source","auto");
+    }
+
+    if(e.target.matches('input[type="number"], textarea')){
       recalcAll();
       clearTimeout(t);
       t = setTimeout(saveAll, 120);
     }
   });
 
-  document.getElementById("btnReset").addEventListener("click", resetAll);
-  document.getElementById("btnExport").addEventListener("click", exportData);
-  document.getElementById("btnImport").addEventListener("click", importData);
-
+  // Load initial page from hash (nice)
   window.addEventListener("load", () => {
     loadAll();
     recalcAll();
+    const hash = (location.hash || "").replace("#","");
+    if(["day1","day2","day3","day4","day5"].includes(hash)){
+      showPage(hash);
+    }
   });
 
   // Service worker for offline
